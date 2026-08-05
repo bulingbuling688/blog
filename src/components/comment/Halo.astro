@@ -155,7 +155,7 @@ const subjectKind = kind;
 			withReplies: "true",
 			page: "1",
 			size: "50",
-			sort: "creationTimestamp,asc",
+			sort: "metadata.creationTimestamp,asc",
 		});
 		try {
 			const response = await fetch(`${commentsApi}?${params}`, {
