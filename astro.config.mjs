@@ -108,6 +108,10 @@ export default defineConfig({
 
 	adapter,
 
+	server: {
+		allowedHosts: ["blog.chatapi.fun", "localhost", "127.0.0.1"],
+	},
+
 	// 图像优化配置
 	image: {
 		// 组件可自行传入 layout/widths；这里只控制 Markdown 正文图片
