@@ -1,4 +1,54 @@
 
+# 个人博客 · blog
+
+## Online URL
+
+- 在线地址：https://blog.chatapi.fun
+
+## Project Summary
+
+基于 Firefly Astro 主题的个人博客：Astro 静态前端 + Halo 后端。前端通过 `halo-preview` 自动同步 Halo 内容（文章、分类、标签、动态、设置）并重建静态站点；Halo 负责内容管理与评论。文章内容均来自个人创作与整理。
+
+## Deployment
+
+| Field | Value |
+| --- | --- |
+| Project slug | `blog` |
+| GitHub repo | `https://github.com/bulingbuling688/blog` |
+| VM deploy path | `/opt/apps/blog`（Halo: `halo/`，前端: `firefly/`） |
+| Runtime mode | systemd × 2（`halo-blog` + `firefly-blog`） |
+| Build command | `pnpm install && pnpm build`（前端，halo-preview 自动执行） |
+| Start command | `sudo systemctl restart halo-blog firefly-blog` |
+| Internal ports | Halo `127.0.0.1:8090`，前端 preview `127.0.0.1:4321` |
+| Public domain | `https://blog.chatapi.fun` |
+| Nginx config | `/etc/nginx/sites-available/blog.conf` |
+| Cloudflare DNS | Proxied A 记录 `blog.chatapi.fun -> 35.232.49.19` |
+| TLS certificate | Let's Encrypt（certbot，自动续期） |
+| Environment file | 前端 systemd 注入 `HALO_API_URL` / `PUBLIC_HALO_API_URL` |
+
+## Common Commands
+
+```bash
+# 查看前端重建日志
+sudo journalctl -u firefly-blog -f
+# 查看 Halo 日志
+sudo journalctl -u halo-blog -f
+# 重启两个服务
+sudo systemctl restart halo-blog firefly-blog
+# 手动触发前端重建（内容变更后）
+cd /opt/apps/blog/firefly && pnpm sync:halo && pnpm build
+# 更新前端代码
+cd /opt/apps/blog/firefly && git pull --ff-only && sudo systemctl restart firefly-blog
+```
+
+## Maintenance Log
+
+- 2026-08-05：博客上线 `blog.chatapi.fun`（GitHub `bulingbuling688/blog`、VM `/opt/apps/blog`、Halo 数据迁移、Nginx + Cloudflare + Let's Encrypt）。
+- 2026-08-05：修复评论列表排序参数（Halo 索引名为 `metadata.creationTimestamp`）。
+
+---
+
+
 <img src="./docs/images/1131.png" width = "350" height = "500" alt="Firefly" align=right />
 
 <div align="center">
